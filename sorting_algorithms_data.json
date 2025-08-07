@@ -1,0 +1,74 @@
+{
+  "Bubble Sort": {
+    "best_case": "O(n)",
+    "average_case": "O(n\u00b2)",
+    "worst_case": "O(n\u00b2)",
+    "space_complexity": "O(1)",
+    "stable": true,
+    "comparison_based": true,
+    "description": "Simple algorithm that repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order."
+  },
+  "Selection Sort": {
+    "best_case": "O(n\u00b2)",
+    "average_case": "O(n\u00b2)",
+    "worst_case": "O(n\u00b2)",
+    "space_complexity": "O(1)",
+    "stable": false,
+    "comparison_based": true,
+    "description": "Finds the minimum element from the unsorted part and places it at the beginning."
+  },
+  "Insertion Sort": {
+    "best_case": "O(n)",
+    "average_case": "O(n\u00b2)",
+    "worst_case": "O(n\u00b2)",
+    "space_complexity": "O(1)",
+    "stable": true,
+    "comparison_based": true,
+    "description": "Builds the sorted array one element at a time by repeatedly inserting the next element into its correct position."
+  },
+  "Merge Sort": {
+    "best_case": "O(n log n)",
+    "average_case": "O(n log n)",
+    "worst_case": "O(n log n)",
+    "space_complexity": "O(n)",
+    "stable": true,
+    "comparison_based": true,
+    "description": "Divide-and-conquer algorithm that divides the array into halves, recursively sorts them, and then merges the sorted halves."
+  },
+  "Quick Sort": {
+    "best_case": "O(n log n)",
+    "average_case": "O(n log n)",
+    "worst_case": "O(n\u00b2)",
+    "space_complexity": "O(log n)",
+    "stable": false,
+    "comparison_based": true,
+    "description": "Picks a pivot element and partitions the array around it, then recursively sorts the partitions."
+  },
+  "Heap Sort": {
+    "best_case": "O(n log n)",
+    "average_case": "O(n log n)",
+    "worst_case": "O(n log n)",
+    "space_complexity": "O(1)",
+    "stable": false,
+    "comparison_based": true,
+    "description": "Converts the array into a heap data structure and repeatedly extracts the maximum element."
+  },
+  "Radix Sort": {
+    "best_case": "O(nk)",
+    "average_case": "O(nk)",
+    "worst_case": "O(nk)",
+    "space_complexity": "O(n+k)",
+    "stable": true,
+    "comparison_based": false,
+    "description": "Non-comparison based algorithm that sorts by processing individual digits or characters."
+  },
+  "Counting Sort": {
+    "best_case": "O(n+k)",
+    "average_case": "O(n+k)",
+    "worst_case": "O(n+k)",
+    "space_complexity": "O(k)",
+    "stable": true,
+    "comparison_based": false,
+    "description": "Non-comparison based algorithm that counts occurrences of each distinct element."
+  }
+}

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="app-title">
+                    <span class="title-icon">📊</span>
+                    Sorting Visualizer
+                </h1>
+                <div class="header-controls">
+                    <select id="themeSelector" class="form-control">
+                        <option value="light">Light Theme</option>
+                        <option value="dark">Dark Theme</option>
+                        <option value="neon">Neon Theme</option>
+                        <option value="ocean">Ocean Theme</option>
+                        <option value="forest">Forest Theme</option>
+                    </select>
+                    <button id="audioToggle" class="btn btn--secondary" title="Toggle Audio">
+                        <span id="audioIcon">🔊</span>
+                    </button>
+                    <button id="fullscreenBtn" class="btn btn--secondary" title="Toggle Fullscreen">
+                        <span>⛶</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Navigation -->
+        <nav class="main-nav">
+            <div class="nav-container">
+                <button class="nav-tab active" data-tab="visualizer">Visualizer</button>
+                <button class="nav-tab" data-tab="algorithm-info">Algorithm Info</button>
+                <button class="nav-tab" data-tab="pseudocode">Pseudocode</button>
+                <button class="nav-tab" data-tab="complexity">Complexity Analysis</button>
+            </div>
+        </nav>
+
+        <!-- Tab Contents -->
+        <main class="main-content">
+            
+            <!-- Visualizer Tab -->
+            <section id="visualizer-tab" class="tab-content active">
+                <div class="visualizer-layout">
+                    <!-- Left Control Panel -->
+                    <aside class="control-panel">
+                        <div class="control-section">
+                            <h3>Algorithm Selection</h3>
+                            <select id="algorithmSelect" class="form-control">
+                                <option value="bubble">Bubble Sort</option>
+                                <option value="selection">Selection Sort</option>
+                                <option value="insertion">Insertion Sort</option>
+                                <option value="merge">Merge Sort</option>
+                                <option value="quick">Quick Sort</option>
+                                <option value="heap">Heap Sort</option>
+                            </select>
+                        </div>
+
+                        <div class="control-section">
+                            <h3>Array Configuration</h3>
+                            <div class="form-group">
+                                <label class="form-label">Array Size: <span id="arraySizeDisplay">50</span></label>
+                                <input type="range" id="arraySize" class="slider" min="5" max="300" value="50">
+                            </div>
+                            <div class="pattern-buttons">
+                                <button id="randomBtn" class="btn btn--secondary btn--sm">Random</button>
+                                <button id="sortedBtn" class="btn btn--secondary btn--sm">Sorted</button>
+                                <button id="reverseBtn" class="btn btn--secondary btn--sm">Reverse</button>
+                                <button id="nearlyBtn" class="btn btn--secondary btn--sm">Nearly Sorted</button>
+                            </div>
+                        </div>
+
+                        <div class="control-section">
+                            <h3>Playback Controls</h3>
+                            <div class="playback-buttons">
+                                <button id="playBtn" class="btn btn--primary">Play</button>
+                                <button id="pauseBtn" class="btn btn--secondary" disabled>Pause</button>
+                                <button id="stepBtn" class="btn btn--outline">Step</button>
+                                <button id="resetBtn" class="btn btn--outline">Reset</button>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Speed: <span id="speedDisplay">1x</span></label>
+                                <input type="range" id="speedControl" class="slider" min="0.5" max="10" value="1" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Volume: <span id="volumeDisplay">50%</span></label>
+                                <input type="range" id="volumeControl" class="slider" min="0" max="100" value="50">
+                            </div>
+                        </div>
+
+                        <div class="control-section">
+                            <h3>Statistics</h3>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-label">Comparisons</div>
+                                    <div class="stat-value" id="comparisons">0</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Swaps</div>
+                                    <div class="stat-value" id="swaps">0</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Time</div>
+                                    <div class="stat-value" id="timeElapsed">0ms</div>
+                                </div>
+                            </div>
+                            <div class="current-operation" id="currentOperation">
+                                Ready to start sorting...
+                            </div>
+                        </div>
+                    </aside>
+
+                    <!-- Main Visualization Area -->
+                    <div class="visualization-area">
+                        <div class="canvas-container">
+                            <canvas id="sortingCanvas" width="800" height="400"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Algorithm Info Tab -->
+            <section id="algorithm-info-tab" class="tab-content">
+                <div class="info-container">
+                    <div class="card">
+                        <div class="card__body">
+                            <h2 id="algoTitle">Bubble Sort</h2>
+                            <p id="algoDescription">A simple comparison-based algorithm that repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order.</p>
+                            
+                            <div class="properties-grid">
+                                <div class="property">
+                                    <strong>Stable:</strong> <span id="algoStable">Yes</span>
+                                </div>
+                                <div class="property">
+                                    <strong>In-place:</strong> <span id="algoInPlace">Yes</span>
+                                </div>
+                                <div class="property">
+                                    <strong>Method:</strong> <span id="algoMethod">Comparison</span>
+                                </div>
+                            </div>
+
+                            <div class="explanation">
+                                <h3>How it works:</h3>
+                                <p id="algoExplanation">Bubble Sort works by repeatedly comparing adjacent elements and swapping them if they're in the wrong order. The largest element 'bubbles' to the end in each pass.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pseudocode Tab -->
+            <section id="pseudocode-tab" class="tab-content">
+                <div class="info-container">
+                    <div class="card">
+                        <div class="card__body">
+                            <h2>Pseudocode</h2>
+                            <pre id="algorithmPseudocode">for i = 0 to n-1:
+  for j = 0 to n-i-2:
+    if array[j] > array[j+1]:
+      swap(array[j], array[j+1])</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Complexity Analysis Tab -->
+            <section id="complexity-tab" class="tab-content">
+                <div class="info-container">
+                    <div class="card">
+                        <div class="card__body">
+                            <h2>Complexity Analysis</h2>
+                            
+                            <div class="complexity-section">
+                                <h3>Time Complexity</h3>
+                                <div class="complexity-grid">
+                                    <div class="complexity-case">
+                                        <div class="case-label">Best Case</div>
+                                        <div class="case-value" id="bestCase">O(n)</div>
+                                    </div>
+                                    <div class="complexity-case">
+                                        <div class="case-label">Average Case</div>
+                                        <div class="case-value" id="avgCase">O(n²)</div>
+                                    </div>
+                                    <div class="complexity-case">
+                                        <div class="case-label">Worst Case</div>
+                                        <div class="case-value" id="worstCase">O(n²)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="complexity-section">
+                                <h3>Space Complexity</h3>
+                                <div class="space-complexity" id="spaceComplexity">O(1)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
