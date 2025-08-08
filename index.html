@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorting Visualizer</title>
+    <title>Sorting Algorithm Visualizer</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;550;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="app-container">
@@ -23,36 +26,33 @@
                         <option value="ocean">Ocean Theme</option>
                         <option value="forest">Forest Theme</option>
                     </select>
-                    <button id="audioToggle" class="btn btn--secondary" title="Toggle Audio">
-                        <span id="audioIcon">🔊</span>
-                    </button>
-                    <button id="fullscreenBtn" class="btn btn--secondary" title="Toggle Fullscreen">
-                        <span>⛶</span>
+                    <button id="fullscreenBtn" class="btn btn--secondary">
+                        <span id="fullscreenIcon">⛶</span>
                     </button>
                 </div>
             </div>
         </header>
 
-        <!-- Main Navigation -->
+        <!-- Navigation -->
         <nav class="main-nav">
             <div class="nav-container">
                 <button class="nav-tab active" data-tab="visualizer">Visualizer</button>
-                <button class="nav-tab" data-tab="algorithm-info">Algorithm Info</button>
-                <button class="nav-tab" data-tab="pseudocode">Pseudocode</button>
+                <button class="nav-tab" data-tab="algorithm">Algorithm Info</button>
                 <button class="nav-tab" data-tab="complexity">Complexity Analysis</button>
+                <button class="nav-tab" data-tab="about">About</button>
             </div>
         </nav>
 
-        <!-- Tab Contents -->
+        <!-- Main Content -->
         <main class="main-content">
-            
             <!-- Visualizer Tab -->
-            <section id="visualizer-tab" class="tab-content active">
+            <div id="visualizer-tab" class="tab-content active">
                 <div class="visualizer-layout">
-                    <!-- Left Control Panel -->
-                    <aside class="control-panel">
+                    <!-- Control Panel -->
+                    <div class="control-panel">
+                        <!-- Algorithm Selection -->
                         <div class="control-section">
-                            <h3>Algorithm Selection</h3>
+                            <h3>Algorithm</h3>
                             <select id="algorithmSelect" class="form-control">
                                 <option value="bubble">Bubble Sort</option>
                                 <option value="selection">Selection Sort</option>
@@ -63,12 +63,34 @@
                             </select>
                         </div>
 
+                        <!-- Array Size -->
                         <div class="control-section">
-                            <h3>Array Configuration</h3>
-                            <div class="form-group">
-                                <label class="form-label">Array Size: <span id="arraySizeDisplay">50</span></label>
-                                <input type="range" id="arraySize" class="slider" min="5" max="300" value="50">
+                            <h3>Array Size: <span id="arraySizeDisplay">50</span></h3>
+                            <input type="range" id="arraySize" class="slider" min="10" max="100" value="50">
+                        </div>
+
+                        <!-- Custom Array Input -->
+                        <div class="control-section">
+                            <h3>Custom Array</h3>
+                            <div class="custom-array-section">
+                                <input 
+                                    type="text" 
+                                    id="customArrayInput" 
+                                    class="custom-array-input" 
+                                    placeholder="Enter numbers separated by commas (e.g., 5,3,8,1,9)"
+                                    aria-label="Custom array input"
+                                >
+                                <div id="customArrayError" class="error-message" style="display: none;"></div>
+                                <div class="custom-array-buttons">
+                                    <button id="applyCustomArray" class="btn btn--primary btn--sm">Apply Array</button>
+                                    <button id="clearCustomArray" class="btn btn--secondary btn--sm">Clear</button>
+                                </div>
                             </div>
+                        </div>
+
+                        <!-- Array Patterns -->
+                        <div class="control-section">
+                            <h3>Generate Pattern</h3>
                             <div class="pattern-buttons">
                                 <button id="randomBtn" class="btn btn--secondary btn--sm">Random</button>
                                 <button id="sortedBtn" class="btn btn--secondary btn--sm">Sorted</button>
@@ -77,25 +99,34 @@
                             </div>
                         </div>
 
+                        <!-- Playback Controls -->
                         <div class="control-section">
-                            <h3>Playback Controls</h3>
+                            <h3>Playback</h3>
                             <div class="playback-buttons">
-                                <button id="playBtn" class="btn btn--primary">Play</button>
-                                <button id="pauseBtn" class="btn btn--secondary" disabled>Pause</button>
-                                <button id="stepBtn" class="btn btn--outline">Step</button>
-                                <button id="resetBtn" class="btn btn--outline">Reset</button>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Speed: <span id="speedDisplay">1x</span></label>
-                                <input type="range" id="speedControl" class="slider" min="0.5" max="10" value="1" step="0.1">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Volume: <span id="volumeDisplay">50%</span></label>
-                                <input type="range" id="volumeControl" class="slider" min="0" max="100" value="50">
+                                <button id="playBtn" class="btn btn--primary">▶️ Play</button>
+                                <button id="pauseBtn" class="btn btn--secondary" disabled>⏸️ Pause</button>
+                                <button id="stepBtn" class="btn btn--secondary">⏭️ Step</button>
+                                <button id="resetBtn" class="btn btn--outline">🔄 Reset</button>
                             </div>
                         </div>
 
+                        <!-- Speed Control -->
                         <div class="control-section">
+                            <h3>Speed: <span id="speedDisplay">1.0x</span></h3>
+                            <input type="range" id="speedControl" class="slider" min="0.1" max="5" step="0.1" value="1">
+                        </div>
+
+                        <!-- Volume Control -->
+                        <div class="control-section">
+                            <h3>Volume: <span id="volumeDisplay">50%</span></h3>
+                            <input type="range" id="volumeControl" class="slider" min="0" max="100" value="50">
+                            <button id="audioToggle" class="btn btn--secondary btn--sm">
+                                <span id="audioIcon">🔊</span> Audio
+                            </button>
+                        </div>
+
+                        <!-- Statistics -->
+                        <div class="control-section stats-section">
                             <h3>Statistics</h3>
                             <div class="stats-grid">
                                 <div class="stat-item">
@@ -115,95 +146,147 @@
                                 Ready to start sorting...
                             </div>
                         </div>
-                    </aside>
+                    </div>
 
-                    <!-- Main Visualization Area -->
+                    <!-- Visualization Area -->
                     <div class="visualization-area">
                         <div class="canvas-container">
                             <canvas id="sortingCanvas" width="800" height="400"></canvas>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
 
             <!-- Algorithm Info Tab -->
-            <section id="algorithm-info-tab" class="tab-content">
+            <div id="algorithm-tab" class="tab-content">
                 <div class="info-container">
-                    <div class="card">
-                        <div class="card__body">
-                            <h2 id="algoTitle">Bubble Sort</h2>
-                            <p id="algoDescription">A simple comparison-based algorithm that repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order.</p>
-                            
-                            <div class="properties-grid">
-                                <div class="property">
-                                    <strong>Stable:</strong> <span id="algoStable">Yes</span>
-                                </div>
-                                <div class="property">
-                                    <strong>In-place:</strong> <span id="algoInPlace">Yes</span>
-                                </div>
-                                <div class="property">
-                                    <strong>Method:</strong> <span id="algoMethod">Comparison</span>
-                                </div>
-                            </div>
+                    <div class="algorithm-info-enhanced">
+                        <div class="algorithm-header">
+                            <div class="algorithm-icon">🔄</div>
+                            <h2 class="algorithm-title" id="algoTitle">Bubble Sort</h2>
+                        </div>
 
-                            <div class="explanation">
-                                <h3>How it works:</h3>
-                                <p id="algoExplanation">Bubble Sort works by repeatedly comparing adjacent elements and swapping them if they're in the wrong order. The largest element 'bubbles' to the end in each pass.</p>
+                        <div class="algorithm-description" id="algoDescription">
+                            A simple comparison-based algorithm that repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order.
+                        </div>
+
+                        <div class="properties-grid-enhanced">
+                            <div class="property-enhanced">
+                                <div class="property-label">Stable</div>
+                                <div class="property-value" id="algoStable">Yes</div>
+                            </div>
+                            <div class="property-enhanced">
+                                <div class="property-label">In-place</div>
+                                <div class="property-value" id="algoInPlace">Yes</div>
+                            </div>
+                            <div class="property-enhanced">
+                                <div class="property-label">Method</div>
+                                <div class="property-value" id="algoMethod">Comparison</div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </section>
 
-            <!-- Pseudocode Tab -->
-            <section id="pseudocode-tab" class="tab-content">
-                <div class="info-container">
-                    <div class="card">
-                        <div class="card__body">
-                            <h2>Pseudocode</h2>
-                            <pre id="algorithmPseudocode">for i = 0 to n-1:
-  for j = 0 to n-i-2:
-    if array[j] > array[j+1]:
-      swap(array[j], array[j+1])</pre>
+                        <h3>How it works:</h3>
+                        <div class="explanation">
+                            <p id="algoExplanation">
+                                Bubble Sort works by repeatedly comparing adjacent elements and swapping them if they're in the wrong order. The largest element 'bubbles' to the end in each pass.
+                            </p>
                         </div>
+
+                        <h3>Pseudocode</h3>
+                        <pre class="pseudocode-enhanced" id="algorithmPseudocode">for i = 0 to n-1:
+    for j = 0 to n-i-2:
+        if array[j] > array[j+1]:
+            swap(array[j], array[j+1])</pre>
                     </div>
                 </div>
-            </section>
+            </div>
 
             <!-- Complexity Analysis Tab -->
-            <section id="complexity-tab" class="tab-content">
+            <div id="complexity-tab" class="tab-content">
                 <div class="info-container">
-                    <div class="card">
-                        <div class="card__body">
-                            <h2>Complexity Analysis</h2>
-                            
-                            <div class="complexity-section">
-                                <h3>Time Complexity</h3>
-                                <div class="complexity-grid">
-                                    <div class="complexity-case">
-                                        <div class="case-label">Best Case</div>
-                                        <div class="case-value" id="bestCase">O(n)</div>
-                                    </div>
-                                    <div class="complexity-case">
-                                        <div class="case-label">Average Case</div>
-                                        <div class="case-value" id="avgCase">O(n²)</div>
-                                    </div>
-                                    <div class="complexity-case">
-                                        <div class="case-label">Worst Case</div>
-                                        <div class="case-value" id="worstCase">O(n²)</div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="complexity-section-enhanced">
+                        <div class="complexity-header">
+                            <div class="complexity-icon">⏱️</div>
+                            <h2 class="complexity-title">Time Complexity</h2>
+                        </div>
 
-                            <div class="complexity-section">
-                                <h3>Space Complexity</h3>
-                                <div class="space-complexity" id="spaceComplexity">O(1)</div>
+                        <div class="complexity-grid-enhanced">
+                            <div class="complexity-case-enhanced">
+                                <div class="case-label-enhanced">Best Case</div>
+                                <div class="case-value-enhanced" id="bestCase">O(n)</div>
+                            </div>
+                            <div class="complexity-case-enhanced">
+                                <div class="case-label-enhanced">Average Case</div>
+                                <div class="case-value-enhanced" id="avgCase">O(n²)</div>
+                            </div>
+                            <div class="complexity-case-enhanced">
+                                <div class="case-label-enhanced">Worst Case</div>
+                                <div class="case-value-enhanced" id="worstCase">O(n²)</div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
 
+                    <div class="complexity-section-enhanced">
+                        <div class="complexity-header">
+                            <div class="complexity-icon">💾</div>
+                            <h2 class="complexity-title">Space Complexity</h2>
+                        </div>
+
+                        <div class="space-complexity-enhanced">
+                            <div class="space-complexity-label">Space Required</div>
+                            <div class="space-complexity-value" id="spaceComplexity">O(1)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Tab -->
+            <div id="about-tab" class="tab-content">
+                <div class="info-container">
+                    <div class="card">
+                        <div class="card__body">
+                            <h2>About Sorting Visualizer</h2>
+                            <p>
+                                This interactive sorting visualizer helps you understand how different sorting algorithms work
+                                by providing visual representations of the sorting process. You can see comparisons, swaps,
+                                and the overall flow of each algorithm.
+                            </p>
+
+                            <h3>Features</h3>
+                            <ul>
+                                <li>6 popular sorting algorithms</li>
+                                <li>Real-time visualization with audio feedback</li>
+                                <li>Adjustable speed and array size</li>
+                                <li>Custom array input functionality</li>
+                                <li>Different array patterns (random, sorted, reverse, nearly sorted)</li>
+                                <li>Detailed algorithm information and complexity analysis</li>
+                                <li>Multiple color themes</li>
+                                <li>Responsive design for all devices</li>
+                                <li>Keyboard shortcuts for quick control</li>
+                            </ul>
+
+                            <h3>Keyboard Shortcuts</h3>
+                            <ul>
+                                <li><strong>Space</strong> - Play/Pause sorting</li>
+                                <li><strong>R</strong> - Reset visualization</li>
+                                <li><strong>F</strong> - Toggle fullscreen</li>
+                                <li><strong>M</strong> - Toggle audio</li>
+                            </ul>
+
+                            <h3>How to Use Custom Array</h3>
+                            <p>
+                                You can input your own array values in the "Custom Array" section:
+                            </p>
+                            <ol>
+                                <li>Enter numbers separated by commas (e.g., 5,3,8,1,9,2)</li>
+                                <li>Click "Apply Array" to use your custom values</li>
+                                <li>The visualization will use your custom array for sorting</li>
+                                <li>Invalid inputs will be filtered out automatically</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
