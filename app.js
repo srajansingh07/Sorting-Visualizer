@@ -332,7 +332,170 @@ for i = n-1 down to 1:
 
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => this.handleKeyboard(e));
+    
+        // Setup custom array input
+        this.setupCustomArrayInput();
+
     }
+
+    // Custom Array Input Methods - Added for enhanced functionality
+        setupCustomArrayInput() {
+            const customArrayInput = document.getElementById('customArrayInput');
+            const applyButton = document.getElementById('applyCustomArray');
+            const clearButton = document.getElementById('clearCustomArray');
+            const errorDiv = document.getElementById('customArrayError');
+
+            if (customArrayInput) {
+                // Apply custom array on Enter key
+                customArrayInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.applyCustomArray();
+                    }
+                });
+
+                // Clear error on input
+                customArrayInput.addEventListener('input', () => {
+                    this.clearCustomArrayError();
+                });
+            }
+
+            if (applyButton) {
+                applyButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.applyCustomArray();
+                });
+            }
+
+            if (clearButton) {
+                clearButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.clearCustomArray();
+                });
+            }
+        }
+
+        applyCustomArray() {
+            const customArrayInput = document.getElementById('customArrayInput');
+            const errorDiv = document.getElementById('customArrayError');
+
+            if (!customArrayInput) return;
+
+            const inputValue = customArrayInput.value.trim();
+
+            if (!inputValue) {
+                this.showCustomArrayError('Please enter some numbers');
+                return;
+            }
+
+            try {
+                // Parse the input and validate
+                const inputArray = this.parseCustomArrayInput(inputValue);
+
+                if (inputArray.length === 0) {
+                    this.showCustomArrayError('No valid numbers found');
+                    return;
+                }
+
+                if (inputArray.length > 100) {
+                    this.showCustomArrayError('Maximum 100 numbers allowed');
+                    return;
+                }
+
+                // Apply the custom array
+                this.state.array = [...inputArray];
+                this.state.originalArray = [...inputArray];
+                this.state.arraySize = inputArray.length;
+
+                // Update array size display and slider
+                const arraySizeDisplay = document.getElementById('arraySizeDisplay');
+                const arraySizeSlider = document.getElementById('arraySize');
+
+                if (arraySizeDisplay) {
+                    arraySizeDisplay.textContent = inputArray.length;
+                }
+                if (arraySizeSlider) {
+                    arraySizeSlider.value = Math.min(100, inputArray.length);
+                }
+
+                this.resetAnimationState();
+                this.resetStats();
+                this.draw();
+                this.clearCustomArrayError();
+
+                // Success feedback
+                customArrayInput.classList.remove('input-error');
+                this.updateCurrentOperation(`Custom array applied (${inputArray.length} elements)`);
+
+            } catch (error) {
+                this.showCustomArrayError(error.message);
+            }
+        }
+
+        parseCustomArrayInput(input) {
+            // Split by commas and parse each number
+            const numbers = input.split(',')
+                .map(str => str.trim())
+                .filter(str => str.length > 0)
+                .map(str => {
+                    const num = parseInt(str, 10);
+                    if (isNaN(num)) {
+                        throw new Error(`"${str}" is not a valid number`);
+                    }
+                    if (num < 1 || num > 500) {
+                        throw new Error(`Numbers must be between 1 and 500 (found: ${num})`);
+                    }
+                    return num;
+                });
+
+            // Remove duplicates and sort for better visualization
+            const uniqueNumbers = [...new Set(numbers)];
+
+            return uniqueNumbers;
+        }
+
+        showCustomArrayError(message) {
+            const customArrayInput = document.getElementById('customArrayInput');
+            const errorDiv = document.getElementById('customArrayError');
+
+            if (customArrayInput) {
+                customArrayInput.classList.add('input-error');
+            }
+
+            if (errorDiv) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        clearCustomArrayError() {
+            const customArrayInput = document.getElementById('customArrayInput');
+            const errorDiv = document.getElementById('customArrayError');
+
+            if (customArrayInput) {
+                customArrayInput.classList.remove('input-error');
+            }
+
+            if (errorDiv) {
+                errorDiv.style.display = 'none';
+                errorDiv.textContent = '';
+            }
+        }
+
+        clearCustomArray() {
+            const customArrayInput = document.getElementById('customArrayInput');
+
+            if (customArrayInput) {
+                customArrayInput.value = '';
+            }
+
+            this.clearCustomArrayError();
+            this.updateCurrentOperation('Custom array input cleared');
+        }
+
+    
 
     handleKeyboard(e) {
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
