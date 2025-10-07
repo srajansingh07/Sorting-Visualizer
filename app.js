@@ -1,9 +1,3 @@
-/**
- * Premium Sorting Visualizer Application - Enhanced Version
- * Features: Removed description card, enlarged visualization, removed Lines mode,
- * Enhanced HD visualizations, improved mobile responsiveness
- */
-
 class SortingVisualizer {
     constructor() {
         this.array = [];
@@ -30,7 +24,6 @@ class SortingVisualizer {
             { key: 'counting', name: 'Counting Sort' }
         ];
         
-        // REMOVED LINES - Only 4 modes now: bars, dots, blocks, particles
         this.visualModes = [
             { key: 'bars', name: 'Bars' },
             { key: 'dots', name: 'Dots' },
