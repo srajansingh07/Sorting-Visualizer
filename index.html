@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Visualizer | Premium Interactive Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-sort-amount-up"></i>
+                    <span>SortViz</span>
+                </div>
+                <nav class="nav-tabs">
+                    <button id="visualizerTab" class="nav-tab active">
+                        <i class="fas fa-play"></i>
+                        <span>Visualizer</span>
+                    </button>
+                    <button id="learningTab" class="nav-tab">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Learning Hub</span>
+                    </button>
+                </nav>
+                <div class="header-actions">
+                    <button id="themeToggle" class="btn-icon">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="soundToggle" class="btn-icon">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Visualizer Section -->
+        <section id="visualizerSection" class="section active">
+            <div class="container">
+                <!-- Control Panel -->
+                <div class="panel">
+                    <div class="control-row">
+                        <!-- Algorithm Horizontal Slider -->
+                        <div class="control-group">
+                            <label class="form-label">Algorithm</label>
+                            <div class="horizontal-slider">
+                                <button class="slider-btn prev" id="algorithmPrev">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <div class="slider-display" id="algorithmDisplay">Bubble Sort</div>
+                                <button class="slider-btn next" id="algorithmNext">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Visualization Mode Horizontal Slider -->
+                        <div class="control-group">
+                            <label class="form-label">Visualization</label>
+                            <div class="horizontal-slider">
+                                <button class="slider-btn prev" id="visualPrev">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <div class="slider-display" id="visualDisplay">Bars</div>
+                                <button class="slider-btn next" id="visualNext">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="arraySize" class="form-label">Array Size: <span id="arraySizeValue">50</span></label>
+                            <div class="slider-container">
+                                <input type="range" id="arraySize" class="slider" min="10" max="200" value="50">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="speed" class="form-label">Speed: <span id="speedValue">Normal</span></label>
+                            <div class="slider-container">
+                                <input type="range" id="speed" class="slider" min="0" max="4" value="2">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-row">
+                        <div class="control-group">
+                            <label for="customArray" class="form-label">Custom Array (comma-separated)</label>
+                            <input type="text" id="customArray" class="form-control" placeholder="e.g., 64, 34, 25, 12, 22, 11, 90">
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button id="generateBtn" class="button button-primary">
+                            <i class="fas fa-random"></i>
+                            <span>Generate</span>
+                        </button>
+                        <button id="startBtn" class="button button-secondary">
+                            <i class="fas fa-play"></i>
+                            <span>Start</span>
+                        </button>
+                        <button id="pauseBtn" class="button button-outline" disabled>
+                            <i class="fas fa-pause"></i>
+                            <span>Pause</span>
+                        </button>
+                        <button id="resetBtn" class="button button-outline">
+                            <i class="fas fa-refresh"></i>
+                            <span>Reset</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="progress-bar">
+                    <div id="progress" class="progress-fill"></div>
+                </div>
+
+                <!-- Analytics Dashboard -->
+                <div class="analytics-dashboard">
+                    <div class="analytics-item">
+                        <div class="analytics-value" id="comparisons">0</div>
+                        <div class="analytics-label">Comparisons</div>
+                    </div>
+                    <div class="analytics-item">
+                        <div class="analytics-value" id="swaps">0</div>
+                        <div class="analytics-label" id="swapsLabel">Swaps</div>
+                    </div>
+                    <div class="analytics-item">
+                        <div class="analytics-value" id="elapsedTime">0</div>
+                        <div class="analytics-label">Time (ms)</div>
+                    </div>
+                    <div class="analytics-item">
+                        <div class="analytics-value" id="complexity">O(?)</div>
+                        <div class="analytics-label">Time Complexity</div>
+                    </div>
+                    <div class="analytics-item">
+                        <div class="analytics-value" id="spaceComplexity">O(?)</div>
+                        <div class="analytics-label">Space Complexity</div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Visualization Container -->
+                <div class="visualization-container enhanced">
+                    <canvas id="visualizationCanvas" class="visualization-canvas"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Learning Hub Section -->
+        <section id="learningSection" class="section">
+            <div class="container">
+                <div class="learning-header">
+                    <h2 class="premium-title">Algorithm Learning Hub</h2>
+                    <p class="premium-subtitle">Explore sorting algorithms with interactive tutorials and detailed explanations.</p>
+                    <div class="floating-particles">
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                    </div>
+                </div>
+
+                <div class="premium-learning-grid">
+                    <!-- Bubble Sort Card -->
+                    <div class="premium-learning-card fade-out" data-algorithm="bubble">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-header-premium">
+                                <h3 class="card-title-premium">Bubble Sort</h3>
+                                <span class="difficulty-badge easy">
+                                    <i class="fas fa-star"></i>
+                                    Easy
+                                </span>
+                            </div>
+                            <div class="card-body-premium">
+                                <div class="complexity-display-container">
+                                    <div class="complexity-display time">
+                                        <span class="complexity-label">Time</span>
+                                        <span class="complexity-value">O(n²)</span>
+                                    </div>
+                                    <div class="complexity-display space">
+                                        <span class="complexity-label">Space</span>
+                                        <span class="complexity-value">O(1)</span>
+                                    </div>
+                                </div>
+                                <p class="card-description-premium">Simple comparison-based algorithm that repeatedly steps through the list.</p>
+                                <button class="premium-learn-btn">
+                                    <span>Learn More</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Selection Sort Card -->
+                    <div class="premium-learning-card fade-out" data-algorithm="selection">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-header-premium">
+                                <h3 class="card-title-premium">Selection Sort</h3>
+                                <span class="difficulty-badge easy">
+                                    <i class="fas fa-star"></i>
+                                    Easy
+                                </span>
+                            </div>
+                            <div class="card-body-premium">
+                                <div class="complexity-display-container">
+                                    <div class="complexity-display time">
+                                        <span class="complexity-label">Time</span>
+                                        <span class="complexity-value">O(n²)</span>
+                                    </div>
+                                    <div class="complexity-display space">
+                                        <span class="complexity-label">Space</span>
+                                        <span class="complexity-value">O(1)</span>
+                                    </div>
+                                </div>
+                                <p class="card-description-premium">Finds the minimum element and places it at the beginning of the unsorted portion.</p>
+                                <button class="premium-learn-btn">
+                                    <span>Learn More</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Insertion Sort Card -->
+                    <div class="premium-learning-card fade-out" data-algorithm="insertion">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-header-premium">
+                                <h3 class="card-title-premium">Insertion Sort</h3>
+                                <span class="difficulty-badge easy">
+                                    <i class="fas fa-star"></i>
+                                    Easy
+                                </span>
+                            </div>
+                            <div class="card-body-premium">
+                                <div class="complexity-display-container">
+                                    <div class="complexity-display time">
+                                        <span class="complexity-label">Time</span>
+                                        <span class="complexity-value">O(n²)</span>
+                                    </div>
+                                    <div class="complexity-display space">
+                                        <span class="complexity-label">Space</span>
+                                        <span class="complexity-value">O(1)</span>
+                                    </div>
+                                </div>
+                                <p class="card-description-premium">Builds the sorted array one element at a time by inserting elements into their correct position.</p>
+                                <button class="premium-learn-btn">
+                                    <span>Learn More</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Merge Sort Card -->
+                    <div class="premium-learning-card fade-out" data-algorithm="merge">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-header-premium">
+                                <h3 class="card-title-premium">Merge Sort</h3>
+                                <span class="difficulty-badge medium">
+                                    <i class="fas fa-star"></i>
+                                    Medium
+                                </span>
+                            </div>
+                            <div class="card-body-premium">
+                                <div class="complexity-display-container">
+                                    <div class="complexity-display time">
+                                        <span class="complexity-label">Time</span>
+                                        <span class="complexity-value">O(n log n)</span>
+                                    </div>
+                                    <div class="complexity-display space">
+                                        <span class="complexity-label">Space</span>
+                                        <span class="complexity-value">O(n)</span>
+                                    </div>
+                                </div>
+                                <p class="card-description-premium">Divide-and-conquer algorithm that divides the array and merges sorted subarrays.</p>
+                                <button class="premium-learn-btn">
+                                    <span>Learn More</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Sort Card -->
+                    <div class="premium-learning-card fade-out" data-algorithm="quick">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-header-premium">
+                                <h3 class="card-title-premium">Quick Sort</h3>
+                                <span class="difficulty-badge medium">
+                                    <i class="fas fa-star"></i>
+                                    Medium
+                                </span>
+                            </div>
+                            <div class="card-body-premium">
+                                <div class="complexity-display-container">
+                                    <div class="complexity-display time">
+                                        <span class="complexity-label">Time</span>
+                                        <span class="complexity-value">O(n log n)</span>
+                                    </div>
+                                    <div class="complexity-display space">
+                                        <span class="complexity-label">Space</span>
+                                        <span class="complexity-value">O(log n)</span>
+                                    </div>
+                                </div>
+                                <p class="card-description-premium">Selects a pivot element and partitions the array around it recursively.</p>
+                                <button class="premium-learn-btn">
+                                    <span>Learn More</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Heap Sort Card -->
+                    <div class="premium-learning-card fade-out" data-algorithm="heap">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-header-premium">
+                                <h3 class="card-title-premium">Heap Sort</h3>
+                                <span class="difficulty-badge hard">
+                                    <i class="fas fa-star"></i>
+                                    Hard
+                                </span>
+                            </div>
+                            <div class="card-body-premium">
+                                <div class="complexity-display-container">
+                                    <div class="complexity-display time">
+                                        <span class="complexity-label">Time</span>
+                                        <span class="complexity-value">O(n log n)</span>
+                                    </div>
+                                    <div class="complexity-display space">
+                                        <span class="complexity-label">Space</span>
+                                        <span class="complexity-value">O(1)</span>
+                                    </div>
+                                </div>
+                                <p class="card-description-premium">Uses a binary heap data structure to sort elements efficiently.</p>
+                                <button class="premium-learn-btn">
+                                    <span>Learn More</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Radix Sort Card -->
+                    <div class="premium-learning-card fade-out" data-algorithm="radix">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-header-premium">
+                                <h3 class="card-title-premium">Radix Sort</h3>
+                                <span class="difficulty-badge hard">
+                                    <i class="fas fa-star"></i>
+                                    Hard
+                                </span>
+                            </div>
+                            <div class="card-body-premium">
+                                <div class="complexity-display-container">
+                                    <div class="complexity-display time">
+                                        <span class="complexity-label">Time</span>
+                                        <span class="complexity-value">O(nk)</span>
+                                    </div>
+                                    <div class="complexity-display space">
+                                        <span class="complexity-label">Space</span>
+                                        <span class="complexity-value">O(n+k)</span>
+                                    </div>
+                                </div>
+                                <p class="card-description-premium">Non-comparative sorting algorithm that sorts by individual digits or characters.</p>
+                                <button class="premium-learn-btn">
+                                    <span>Learn More</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Counting Sort Card -->
+                    <div class="premium-learning-card fade-out" data-algorithm="counting">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-header-premium">
+                                <h3 class="card-title-premium">Counting Sort</h3>
+                                <span class="difficulty-badge medium">
+                                    <i class="fas fa-star"></i>
+                                    Medium
+                                </span>
+                            </div>
+                            <div class="card-body-premium">
+                                <div class="complexity-display-container">
+                                    <div class="complexity-display time">
+                                        <span class="complexity-label">Time</span>
+                                        <span class="complexity-value">O(n+k)</span>
+                                    </div>
+                                    <div class="complexity-display space">
+                                        <span class="complexity-label">Space</span>
+                                        <span class="complexity-value">O(k)</span>
+                                    </div>
+                                </div>
+                                <p class="card-description-premium">Counts occurrences of each element to determine sorted positions.</p>
+                                <button class="premium-learn-btn">
+                                    <span>Learn More</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Tutorial Modal -->
+    <div id="tutorialModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Algorithm Tutorial</h2>
+                <button id="closeModal" class="btn-icon">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent">
+                    <h3>How it works:</h3>
+                    <div id="algorithmSteps"></div>
+                    <h3>Implementation:</h3>
+                    <pre id="algorithmCode"></pre>
+                    <h3>Complexity Analysis:</h3>
+                    <div id="complexityAnalysis"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer with Credit -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-main">
+                    <p class="footer-copyright">© 2025 Sorting Visualizer</p>
+                    <p class="footer-credit">Built with <i class="fas fa-heart heart-icon"></i> by <span class="creator">Srajan Singh</span></p>
+                </div>
+                <div class="footer-tech">
+                    <div class="tech-stack">
+                        <span class="tech-item">HTML5</span>
+                        <span class="tech-item">CSS3</span>
+                        <span class="tech-item">JavaScript</span>
+                    </div>
+                </div>
+                <div class="footer-shortcuts">
+                    <div class="shortcuts">
+                        <span class="shortcut-item"><kbd>Space</kbd> Play/Pause</span>
+                        <span class="shortcut-item"><kbd>R</kbd> Reset</span>
+                        <span class="shortcut-item"><kbd>G</kbd> Generate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
